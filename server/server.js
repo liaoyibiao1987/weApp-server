@@ -2,7 +2,9 @@ var express = require('express');
 fs = require('fs'), 
 formidable = require('formidable'),   
 app = express(),
-bodyParser = require('body-parser'); 
+bodyParser = require('body-parser');
+
+xcxSqllite = require('./xcxSqllite');
 
 var server = require('http').createServer()
   , url = require('url')
@@ -35,7 +37,7 @@ app.get("/getUser.php",function(req,res){
             name:"王浩",
             message:"哈哈",
             time:"22:00",
-            count:1,
+            count:10,
             id:"1"
         },
         {
@@ -43,7 +45,7 @@ app.get("/getUser.php",function(req,res){
             name:"成凤杰",
             message:"干什么呢",
             time:"17:30",
-            count:0,
+            count:20,
             id:"2"
         },
         {
@@ -340,7 +342,24 @@ app.get("/download",function(req,res){
 app.get("/wsConnect.php",function(req,res){
 
 })
- 
+
+
+app.get('/testSqllite',function(req,res){
+    xcxSqllite.connect(function (error) {
+        //res.send(error);
+    });
+    xcxSqllite.setup(function (error) {
+        //res.send(error);
+    });
+    xcxSqllite.add('AAA','bbb',function (msg) {
+        //res.send(msg);
+    });
+    xcxSqllite.allNotes(function (err, data) {
+        res.send(data)
+    })
+
+
+});
 app.set("port",8999);
 app.listen(app.get("port"),function(){
     console.log("服务器已启动...");
